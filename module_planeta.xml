@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_planeta" default="compile.module.planeta">
+  <dirname property="module.planeta.basedir" file="${ant.file.module_planeta}"/>
+  
+  <property name="module.jdk.home.planeta" value=""/>
+  <property name="module.jdk.bin.planeta" value=""/>
+  <property name="module.jdk.classpath.planeta" value=""/>
+  
+  <property name="compiler.args.planeta" value="-encoding UTF-8 -source 10 -target 10 ${compiler.args}"/>
+  
+  <property name="planeta.output.dir" value="${module.planeta.basedir}/out/production/planeta"/>
+  <property name="planeta.testoutput.dir" value="${module.planeta.basedir}/out/test/planeta"/>
+  
+  <path id="planeta.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="planeta.module.production.classpath">
+    <path refid="library.dart_sdk.classpath"/>
+    <path refid="library.dart_packages.classpath"/>
+  </path>
+  
+  <path id="planeta.runtime.production.module.classpath">
+    <pathelement location="${planeta.output.dir}"/>
+    <path refid="library.dart_sdk.classpath"/>
+    <path refid="library.dart_packages.classpath"/>
+  </path>
+  
+  <path id="planeta.module.classpath">
+    <pathelement location="${planeta.output.dir}"/>
+    <path refid="library.dart_sdk.classpath"/>
+    <path refid="library.dart_packages.classpath"/>
+  </path>
+  
+  <path id="planeta.runtime.module.classpath">
+    <pathelement location="${planeta.testoutput.dir}"/>
+    <pathelement location="${planeta.output.dir}"/>
+    <path refid="library.dart_sdk.classpath"/>
+    <path refid="library.dart_packages.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.planeta">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.planeta">
+    <patternset refid="excluded.from.module.planeta"/>
+  </patternset>
+  
+  
+  <target name="compile.module.planeta" depends="compile.module.planeta.production,compile.module.planeta.tests" description="Compile module planeta"/>
+  
+  <target name="compile.module.planeta.production" depends="register.custom.compilers" description="Compile module planeta; production classes"/>
+  
+  <target name="compile.module.planeta.tests" depends="register.custom.compilers,compile.module.planeta.production" description="compile module planeta; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.planeta" description="cleanup module">
+    <delete dir="${planeta.output.dir}"/>
+    <delete dir="${planeta.testoutput.dir}"/>
+  </target>
+</project>

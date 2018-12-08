@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_planeta_android" default="compile.module.planeta_android">
+  <dirname property="module.planeta_android.basedir" file="${ant.file.module_planeta_android}"/>
+  
+  <property name="module.jdk.home.planeta_android" value=""/>
+  <property name="module.jdk.bin.planeta_android" value=""/>
+  <property name="module.jdk.classpath.planeta_android" value=""/>
+  
+  <property name="compiler.args.planeta_android" value="-encoding UTF-8 -source 10 -target 10 ${compiler.args}"/>
+  
+  <property name="planeta_android.output.dir" value="${module.planeta_android.basedir}/out/production/planeta_android"/>
+  <property name="planeta_android.testoutput.dir" value="${module.planeta_android.basedir}/out/test/planeta_android"/>
+  
+  <path id="planeta_android.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="planeta_android.module.production.classpath">
+    <path refid="library.flutter_for_android.classpath"/>
+  </path>
+  
+  <path id="planeta_android.runtime.production.module.classpath">
+    <pathelement location="${planeta_android.output.dir}"/>
+    <path refid="library.flutter_for_android.classpath"/>
+  </path>
+  
+  <path id="planeta_android.module.classpath">
+    <pathelement location="${planeta_android.output.dir}"/>
+    <path refid="library.flutter_for_android.classpath"/>
+  </path>
+  
+  <path id="planeta_android.runtime.module.classpath">
+    <pathelement location="${planeta_android.testoutput.dir}"/>
+    <pathelement location="${planeta_android.output.dir}"/>
+    <path refid="library.flutter_for_android.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.planeta_android">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.planeta_android">
+    <patternset refid="excluded.from.module.planeta_android"/>
+  </patternset>
+  
+  <path id="planeta_android.module.sourcepath">
+    <dirset dir="${module.planeta_android.basedir}/android">
+      <include name="app/src/main/java"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.planeta_android" depends="compile.module.planeta_android.production,compile.module.planeta_android.tests" description="Compile module planeta_android"/>
+  
+  <target name="compile.module.planeta_android.production" depends="register.custom.compilers" description="Compile module planeta_android; production classes">
+    <mkdir dir="${planeta_android.output.dir}"/>
+    <javac2 destdir="${planeta_android.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.planeta_android}/javac">
+      <compilerarg line="${compiler.args.planeta_android}"/>
+      <bootclasspath refid="planeta_android.module.bootclasspath"/>
+      <classpath refid="planeta_android.module.production.classpath"/>
+      <src refid="planeta_android.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.planeta_android"/>
+    </javac2>
+    
+    <copy todir="${planeta_android.output.dir}">
+      <fileset dir="${module.planeta_android.basedir}/android/app/src/main/java">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.planeta_android.tests" depends="register.custom.compilers,compile.module.planeta_android.production" description="compile module planeta_android; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.planeta_android" description="cleanup module">
+    <delete dir="${planeta_android.output.dir}"/>
+    <delete dir="${planeta_android.testoutput.dir}"/>
+  </target>
+</project>
